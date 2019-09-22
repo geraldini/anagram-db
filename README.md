@@ -6,6 +6,5 @@ Create a program that manages anagrams.
 + The word itself should not be printed.
 + If the word the user searched for isn’t known by the system yet, add that word to the list of known words.
 
-The program should take two arguments:
+The program should take one argument:
 + word (mandatory): word to search for anagrams
-+ file-path (optional): path of the file where anagrams are stored
