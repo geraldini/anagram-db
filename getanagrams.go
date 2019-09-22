@@ -76,9 +76,8 @@ func (anagramDb *AnagramDb) GetAnagrams(word string) []string {
 
 func main() {
 	word := flag.String("word", "", "Word to search in the DB.")
-	anagramFile := flag.String("file-path", AnagramsDbFile, "File with the known words")
 	flag.Parse()
-	anagramDb := AnagramDb{DbFile: *anagramFile}
+	anagramDb := AnagramDb{DbFile: AnagramsDbFile}
 	anagramDb.LoadWords()
 	anagrams := anagramDb.GetAnagrams(*word)
 	fmt.Printf("These are the known anagrams of %s:\n%s\n\n", *word, anagrams)
