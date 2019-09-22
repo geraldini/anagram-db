@@ -13,12 +13,14 @@ import (
 
 const AnagramsDbFile = "anagram.json"
 
-func sliceToMap(slice []string) map[string]struct{} {
-	set := make(map[string]struct{}, len(slice))
-	for _, value := range slice {
-		set[value] = struct{}{}
+func getKeys(myMap map[string]struct{}, keyToExclude string) []string {
+	keys := []string{}
+	for key := range myMap {
+		if key != keyToExclude {
+			keys = append(keys, key)
+		}
 	}
-	return set
+	return keys
 }
 
 func sortWord(word string) string {
@@ -28,7 +30,7 @@ func sortWord(word string) string {
 }
 
 type AnagramDb struct {
-	KnownWords map[string][]string
+	KnownWords map[string]map[string]struct{}
 	DbFile     string
 }
 
@@ -53,31 +55,23 @@ func (anagramDb *AnagramDb) Save() {
 
 func (anagramDb *AnagramDb) GetAnagrams(word string) []string {
 	sortedWord := sortWord(word)
-	result := []string{}
 	if knownWords, ok := anagramDb.KnownWords[sortedWord]; ok {
 		log.Printf("There are anagrams for word %s.", word)
-		wordsMap := sliceToMap(knownWords)
-		if _, ok := wordsMap[word]; ok {
+		if _, ok := knownWords[word]; ok {
 			log.Printf("Word %s was already known.", word)
-			for _, value := range anagramDb.KnownWords[sortedWord] {
-				if value != word {
-					result = append(result, value)
-				}
-			}
 		} else {
 			// The word was not known. Add it to the list of known words
 			log.Printf("Word %s was not known. Add it to the list of known words.", word)
-			result = anagramDb.KnownWords[sortedWord]
-			anagramDb.KnownWords[sortedWord] = append(anagramDb.KnownWords[sortedWord], word)
+			anagramDb.KnownWords[sortedWord][word] = struct{}{}
 			anagramDb.Save()
 		}
 	} else {
 		log.Printf("There are no anagrams for word %s.", word)
-		knownWords := []string{word}
-		anagramDb.KnownWords[sortedWord] = knownWords
+		anagramDb.KnownWords[sortedWord] = map[string]struct{}{}
+		anagramDb.KnownWords[sortedWord][word] = struct{}{}
 		anagramDb.Save()
 	}
-	return result
+	return getKeys(anagramDb.KnownWords[sortedWord], word)
 }
 
 func main() {

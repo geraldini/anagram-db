@@ -1,13 +1,16 @@
 {
-  "acert": [
-    "trace",
-    "crate",
-    "react",
-    "certa",
-    "cater"
-  ],
-  "deerssst": [
-    "desserts",
-    "stressed"
-  ]
+  "acert": {
+    "cater": {},
+    "crate": {},
+    "react": {},
+    "trace": {}
+  },
+  "deerssst": {
+    "desserts": {},
+    "stressed": {}
+  },
+  "nnou": {
+    "nuno": {},
+    "onun": {}
+  }
 }
